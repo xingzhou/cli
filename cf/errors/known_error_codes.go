@@ -10,6 +10,7 @@ const (
 	SPACE_EXISTS                = "40002"
 	QUOTA_EXISTS                = "240002"
 	SERVICE_INSTANCE_NAME_TAKEN = "60002"
+	SERVICE_KEY_NAME_TAKEN      = "60003"
 	APP_NOT_STAGED              = "170002"
 	APP_STOPPED                 = "220001"
 	BUILDPACK_EXISTS            = "290001"
