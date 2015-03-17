@@ -2,7 +2,6 @@ package servicekey_test
 
 import (
 	"github.com/cloudfoundry/cli/cf/configuration/core_config"
-	"github.com/cloudfoundry/cli/cf/errors"
 	"github.com/cloudfoundry/cli/cf/models"
 	"github.com/cloudfoundry/cli/generic"
 
@@ -19,11 +18,11 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("create-service-key command", func() {
+var _ = Describe("service-keys command", func() {
 	var (
 		ui                  *testterm.FakeUI
 		config              core_config.Repository
-		cmd                 CreateServiceKey
+		cmd                 ServiceKeys
 		requirementsFactory *testreq.FakeReqFactory
 		serviceRepo         *testapi.FakeServiceRepo
 		serviceKeyRepo      *testapi.FakeServiceKeyRepo
@@ -38,57 +37,68 @@ var _ = Describe("create-service-key command", func() {
 		serviceRepo.FindInstanceByNameMap = generic.NewMap()
 		serviceRepo.FindInstanceByNameMap.Set("fake-service-instance", serviceInstance)
 		serviceKeyRepo = testapi.NewFakeServiceKeyRepo()
-		cmd = NewCreateServiceKey(ui, config, serviceRepo, serviceKeyRepo)
+		cmd = NewListServiceKeys(ui, config, serviceRepo, serviceKeyRepo)
 		requirementsFactory = &testreq.FakeReqFactory{LoginSuccess: true, TargetedSpaceSuccess: true, ServiceInstanceNotFound: false}
 	})
 
-	var callCreateService = func(args []string) bool {
+	var callListServiceKeys = func(args []string) bool {
 		return testcmd.RunCommand(cmd, args, requirementsFactory)
 	}
 
 	Describe("requirements", func() {
 		It("fails when not logged in", func() {
 			requirementsFactory = &testreq.FakeReqFactory{LoginSuccess: false}
-			Expect(callCreateService([]string{"fake-service-instance", "fake-service-key"})).To(BeFalse())
+			Expect(callListServiceKeys([]string{"fake-service-instance", "fake-service-key"})).To(BeFalse())
 		})
 
-		It("requires two arguments to run", func() {
-			Expect(callCreateService([]string{})).To(BeFalse())
-			Expect(callCreateService([]string{"fake-arg-one"})).To(BeFalse())
-			Expect(callCreateService([]string{"fake-arg-one", "fake-arg-two", "fake-arg-three"})).To(BeFalse())
+		It("requires one argument to run", func() {
+			Expect(callListServiceKeys([]string{})).To(BeFalse())
+			Expect(callListServiceKeys([]string{"fake-arg-one"})).To(BeTrue())
+			Expect(callListServiceKeys([]string{"fake-arg-one", "fake-arg-two"})).To(BeFalse())
 		})
 
 		It("fails when service instance is not found", func() {
 			requirementsFactory = &testreq.FakeReqFactory{LoginSuccess: true, ServiceInstanceNotFound: true}
-			Expect(callCreateService([]string{"non-exist-service-instance", "fake-service-key"})).To(BeFalse())
+			Expect(callListServiceKeys([]string{"non-exist-service-instance"})).To(BeFalse())
 		})
 
 		It("fails when space is not targetted", func() {
 			requirementsFactory = &testreq.FakeReqFactory{LoginSuccess: true, TargetedSpaceSuccess: false}
-			Expect(callCreateService([]string{"non-exist-service-instance", "fake-service-key"})).To(BeFalse())
+			Expect(callListServiceKeys([]string{"non-exist-service-instance"})).To(BeFalse())
 		})
 	})
 
 	Describe("requiremnts are satisfied", func() {
-		It("create service key successfully", func() {
-			callCreateService([]string{"fake-service-instance", "fake-service-key"})
-
+		It("list service keys successfully", func() {
+			serviceKeyRepo.ListServiceKeysMethod.ServiceKeys = []models.ServiceKey{
+				models.ServiceKey{
+					Fields: models.ServiceKeyFields{
+						Name: "fake-service-key-1",
+					},
+				},
+				models.ServiceKey{
+					Fields: models.ServiceKeyFields{
+						Name: "fake-service-key-2",
+					},
+				},
+			}
+			callListServiceKeys([]string{"fake-service-instance"})
 			Expect(ui.Outputs).To(ContainSubstrings(
-				[]string{"Creating service key", "fake-service-key", "for service instance", "fake-service-instance", "as", "my-user"},
+				[]string{"Getting keys for service instance", "fake-service-instance", "as", "my-user"},
+				[]string{"name"},
+				[]string{"fake-service-key-1"},
+				[]string{"fake-service-key-2"},
 				[]string{"OK"},
 			))
-			Expect(serviceKeyRepo.CreateServiceKeyMethod.InstanceId).To(Equal("fake-instance-guid"))
-			Expect(serviceKeyRepo.CreateServiceKeyMethod.KeyName).To(Equal("fake-service-key"))
+			Expect(serviceKeyRepo.ListServiceKeysMethod.InstanceId).To(Equal("fake-instance-guid"))
 		})
 
-		It("create service key failed when the service key already exists", func() {
-			serviceKeyRepo.CreateServiceKeyMethod.Error = errors.NewModelAlreadyExistsError("ServiceKey", "exist-service-key")
-			callCreateService([]string{"fake-service-instance", "exist-service-key"})
-
+		It("does not list service keys when none are returned", func() {
+			callListServiceKeys([]string{"fake-service-instance"})
 			Expect(ui.Outputs).To(ContainSubstrings(
-				[]string{"Creating service key", "exist-service-key", "for service instance", "fake-service-instance", "as", "my-user"},
-				[]string{"FAILED"},
-				[]string{"ServiceKey exist-service-key already exists"}))
+				[]string{"Getting keys for service instance", "fake-service-instance", "as", "my-user"},
+				[]string{"No service key for service instance", "fake-service-instance"},
+			))
 		})
 	})
 })

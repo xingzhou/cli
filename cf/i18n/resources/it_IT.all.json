@@ -5208,5 +5208,25 @@
       "id": "Creating service key {{.ServiceKeyName}} for service instance {{.ServiceInstanceName}} as {{.CurrentUser}}...",
       "translation": "Creating service key {{.ServiceKeyName}} for service instance {{.ServiceInstanceName}} as {{.CurrentUser}}...",
       "modified": false
+   },
+   {
+      "id": "Getting keys for service instance {{.ServiceInstanceName}} as {{.CurrentUser}}...",
+      "translation": "Getting keys for service instance {{.ServiceInstanceName}} as {{.CurrentUser}}...",
+      "modified": false
+   },
+   {
+      "id": "No service key for service instance {{.ServiceInstanceName}}",
+      "translation": "No service key for service instance {{.ServiceInstanceName}}",
+      "modified": false
+   },
+   {
+      "id": "List keys for a service instance",
+      "translation": "List keys for a service instance",
+      "modified": false
+   },
+   {
+      "id": "CF_NAME service-keys SERVICE_INSTANCE\n\nEXAMPLE:\n   CF_NAME service-keys mydb",
+      "translation": "CF_NAME service-keys SERVICE_INSTANCE\n\nEXAMPLE:\n   CF_NAME service-keys mydb",
+      "modified": false
    }
 ]
