@@ -14,6 +14,7 @@ import (
 type ServiceKeyRepository interface {
 	CreateServiceKey(instanceId string, keyName string) (apiErr error)
 	ListServiceKeys(instanceId string) (serviceKeys []models.ServiceKey, apiErr error)
+	GetServiceKey(instanceId string, keyName string) (serviceKey models.ServiceKey, apiErr error)
 }
 
 type CloudControllerServiceKeyRepository struct {
@@ -60,4 +61,17 @@ func (c CloudControllerServiceKeyRepository) ListServiceKeys(instanceId string) 
 	}
 
 	return serviceKeys, nil
+}
+
+func (c CloudControllerServiceKeyRepository) GetServiceKey(instanceId string, keyName string) (serviceKey models.ServiceKey, apiErr error) {
+	url := fmt.Sprintf("%s/v2/service_keys?q=service_instance_guid:%s&q=name:%s", c.config.ApiEndpoint(), instanceId, keyName)
+
+	serviceKeyResource := new(resources.ServiceKeyResource)
+	apiErr = c.gateway.GetResource(url, serviceKeyResource)
+
+	if apiErr != nil {
+		return models.ServiceKey{}, apiErr
+	}
+
+	return serviceKeyResource.ToModel(), nil
 }
