@@ -31,8 +31,7 @@ func NewGetServiceKey(ui terminal.UI, config core_config.Reader, serviceRepo api
 
 func (cmd ServiceKey) Metadata() command_metadata.CommandMetadata {
 	return command_metadata.CommandMetadata{
-		Name: "service-key",
-		// ShortName:   "gsk",
+		Name:        "service-key",
 		Description: T("Show service key info"),
 		Usage: T(`CF_NAME service-key SERVICE_INSTANCE SERVICE_KEY
 
@@ -67,11 +66,13 @@ func (cmd ServiceKey) Run(c *cli.Context) {
 		cmd.ui.Failed(err.Error())
 		return
 	}
+
 	serviceKey, err := cmd.serviceKeyRepo.GetServiceKey(serviceInstance.Guid, serviceKeyName)
 	if err != nil {
 		cmd.ui.Failed(err.Error())
 		return
 	}
+
 	cmd.ui.Say(T("Getting key {{.ServiceKeyName}} for service instance {{.ServiceInstanceName}} as {{.CurrentUser}}...",
 		map[string]interface{}{
 			"ServiceKeyName":      terminal.EntityNameColor(serviceKeyName),
@@ -86,6 +87,7 @@ func (cmd ServiceKey) Run(c *cli.Context) {
 				"ServiceInstanceName": terminal.EntityNameColor(serviceInstanceName)}))
 		return
 	}
+
 	if c.Bool("guid") {
 		cmd.ui.Say(serviceKey.Fields.Guid)
 	} else {

@@ -82,13 +82,13 @@ var _ = Describe("create-service-key command", func() {
 		})
 
 		It("create service key failed when the service key already exists", func() {
-			serviceKeyRepo.CreateServiceKeyMethod.Error = errors.NewModelAlreadyExistsError("ServiceKey", "exist-service-key")
+			serviceKeyRepo.CreateServiceKeyMethod.Error = errors.NewModelAlreadyExistsError("Service key", "exist-service-key")
 			callCreateService([]string{"fake-service-instance", "exist-service-key"})
 
 			Expect(ui.Outputs).To(ContainSubstrings(
 				[]string{"Creating service key", "exist-service-key", "for service instance", "fake-service-instance", "as", "my-user"},
-				[]string{"FAILED"},
-				[]string{"ServiceKey exist-service-key already exists"}))
+				[]string{"OK"},
+				[]string{"Service key exist-service-key already exists"}))
 		})
 	})
 })

@@ -117,7 +117,7 @@ var _ = Describe("Service Keys Repo", func() {
 		It("makes the right request", func() {
 			setupTestServer(testapi.NewCloudControllerTestRequest(testnet.TestRequest{
 				Method:   "GET",
-				Path:     "/v2/service_keys?q=service_instance_guid:fake-instance-guid&q=name:fake-service-key-name",
+				Path:     "/v2/service_keys?q=service_instance_guid:fake-instance-guid;name:fake-service-key-name",
 				Response: serviceKeyDetailResponse,
 			}))
 
@@ -146,71 +146,71 @@ var _ = Describe("Service Keys Repo", func() {
 })
 
 var serviceKeysResponse = testnet.TestResponse{Status: http.StatusOK, Body: `{
-	"resources": [
-		{
-	      "metadata": {
-	        "guid": "fake-service-key-guid-1",
-	        "url": "/v2/service_keys/fake-guid-1",
-	        "created_at": "2015-01-13T18:52:08+00:00",
-	        "updated_at": null
-	      },
-	      "entity": {
-	        "name": "fake-service-key-name-1",
-	        "service_instance_guid":"fake-service-instance-guid-1",
-	        "service_instance_url":"http://fake/service/instance/url/1",
-	        "credentials": {
-	          "username": "fake-username-1",
-	          "password": "fake-password-1",
-	          "host": "fake-host-1",
-	          "port": 3306,
-	          "database": "fake-db-name-1",
-	          "uri": "mysql://fake-user-1:fake-password-1@fake-host-1:3306/fake-db-name-1"
-	        }
-	      }
-	    },
-	    {
-	      "metadata": {
-	        "guid": "fake-service-key-guid-2",
-	        "url": "/v2/service_keys/fake-guid-2",
-	        "created_at": "2015-01-13T18:52:08+00:00",
-	        "updated_at": null
-	      },
-	      "entity": {
-	        "name": "fake-service-key-name-2",
-	        "service_instance_guid":"fake-service-instance-guid-2",
-	        "service_instance_url":"http://fake/service/instance/url/1",
-	        "credentials": {
-	          "username": "fake-username-2",
-	          "password": "fake-password-2",
-	          "host": "fake-host-2",
-	          "port": 3306,
-	          "database": "fake-db-name-2",
-	          "uri": "mysql://fake-user-2:fake-password-2@fake-host-2:3306/fake-db-name-2"
-	        }
-	      }
-	    }
-	]}`,
+    "resources": [
+        {
+            "metadata": {
+                "guid": "fake-service-key-guid-1",
+                "url": "/v2/service_keys/fake-guid-1",
+                "created_at": "2015-01-13T18:52:08+00:00",
+                "updated_at": null
+            },
+            "entity": {
+                "name": "fake-service-key-name-1",
+                "service_instance_guid": "fake-service-instance-guid-1",
+                "service_instance_url": "http://fake/service/instance/url/1",
+                "credentials": {
+                    "username": "fake-username-1",
+                    "password": "fake-password-1",
+                    "host": "fake-host-1",
+                    "port": 3306,
+                    "database": "fake-db-name-1",
+                    "uri": "mysql://fake-user-1:fake-password-1@fake-host-1:3306/fake-db-name-1"
+                }
+            }
+        },
+        {
+            "metadata": {
+                "guid": "fake-service-key-guid-2",
+                "url": "/v2/service_keys/fake-guid-2",
+                "created_at": "2015-01-13T18:52:08+00:00",
+                "updated_at": null
+            },
+            "entity": {
+                "name": "fake-service-key-name-2",
+                "service_instance_guid": "fake-service-instance-guid-2",
+                "service_instance_url": "http://fake/service/instance/url/1",
+                "credentials": {
+                    "username": "fake-username-2",
+                    "password": "fake-password-2",
+                    "host": "fake-host-2",
+                    "port": 3306,
+                    "database": "fake-db-name-2",
+                    "uri": "mysql://fake-user-2:fake-password-2@fake-host-2:3306/fake-db-name-2"
+                }
+            }
+        }
+    ]}`,
 }
 
 var serviceKeyDetailResponse = testnet.TestResponse{Status: http.StatusOK, Body: `{
-      "metadata": {
-        "guid": "fake-service-key-guid",
-        "url": "/v2/service_keys/fake-guid",
-        "created_at": "2015-01-13T18:52:08+00:00",
-        "updated_at": null
-      },
-      "entity": {
-        "name": "fake-service-key-name",
-        "service_instance_guid":"fake-service-instance-guid",
-        "service_instance_url":"http://fake/service/instance/url",
-        "credentials": {
-          "username": "fake-username",
-          "password": "fake-password",
-          "host": "fake-host",
-          "port": 3306,
-          "database": "fake-db-name",
-          "uri": "mysql://fake-user:fake-password@fake-host:3306/fake-db-name"
-        }
-      }
+	    "metadata": {
+	        "guid": "fake-service-key-guid",
+	        "url": "/v2/service_keys/fake-guid",
+	        "created_at": "2015-01-13T18:52:08+00:00",
+	        "updated_at": null
+	    },
+	    "entity": {
+	        "name": "fake-service-key-name",
+	        "service_instance_guid": "fake-service-instance-guid",
+	        "service_instance_url": "http://fake/service/instance/url",
+	        "credentials": {
+	            "username": "fake-username",
+	            "password": "fake-password",
+	            "host": "fake-host",
+	            "port": 3306,
+	            "database": "fake-db-name",
+	            "uri": "mysql://fake-user:fake-password@fake-host:3306/fake-db-name"
+	        }
+	    }
 	}`,
 }

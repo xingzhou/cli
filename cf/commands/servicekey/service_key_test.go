@@ -64,7 +64,7 @@ var _ = Describe("service-key command", func() {
 
 		It("fails when space is not targetted", func() {
 			requirementsFactory = &testreq.FakeReqFactory{LoginSuccess: true, TargetedSpaceSuccess: false}
-			Expect(callGetServiceKey([]string{"non-exist-service-instance"})).To(BeFalse())
+			Expect(callGetServiceKey([]string{"fake-service-instance", "fake-service-key"})).To(BeFalse())
 		})
 	})
 

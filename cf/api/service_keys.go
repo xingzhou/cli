@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/cloudfoundry/cli/cf/api/resources"
@@ -36,7 +37,7 @@ func (c CloudControllerServiceKeyRepository) CreateServiceKey(instanceId string,
 	err := c.gateway.CreateResource(c.config.ApiEndpoint(), path, strings.NewReader(data))
 
 	if httpErr, ok := err.(errors.HttpError); ok && httpErr.ErrorCode() == errors.SERVICE_KEY_NAME_TAKEN {
-		return errors.NewModelAlreadyExistsError("ServiceKey", keyName)
+		return errors.NewModelAlreadyExistsError("Service key", keyName)
 	}
 
 	return nil
@@ -64,7 +65,7 @@ func (c CloudControllerServiceKeyRepository) ListServiceKeys(instanceId string) 
 }
 
 func (c CloudControllerServiceKeyRepository) GetServiceKey(instanceId string, keyName string) (serviceKey models.ServiceKey, apiErr error) {
-	url := fmt.Sprintf("%s/v2/service_keys?q=service_instance_guid:%s&q=name:%s", c.config.ApiEndpoint(), instanceId, keyName)
+	url := fmt.Sprintf("%s/v2/service_keys?q=service_instance_guid:%s;%s", c.config.ApiEndpoint(), instanceId, url.QueryEscape("name:"+keyName))
 
 	serviceKeyResource := new(resources.ServiceKeyResource)
 	apiErr = c.gateway.GetResource(url, serviceKeyResource)

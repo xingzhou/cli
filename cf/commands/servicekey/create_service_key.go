@@ -4,6 +4,7 @@ import (
 	"github.com/cloudfoundry/cli/cf/api"
 	"github.com/cloudfoundry/cli/cf/command_metadata"
 	"github.com/cloudfoundry/cli/cf/configuration/core_config"
+	"github.com/cloudfoundry/cli/cf/errors"
 	"github.com/cloudfoundry/cli/cf/requirements"
 	"github.com/cloudfoundry/cli/cf/terminal"
 	"github.com/codegangsta/cli"
@@ -71,10 +72,14 @@ func (cmd CreateServiceKey) Run(c *cli.Context) {
 	}
 
 	err = cmd.serviceKeyRepo.CreateServiceKey(serviceInstance.Guid, serviceKeyName)
-	if err != nil {
-		cmd.ui.Failed(err.Error())
-		return
-	}
 
-	cmd.ui.Ok()
+	switch err.(type) {
+	case nil:
+		cmd.ui.Ok()
+	case *errors.ModelAlreadyExistsError:
+		cmd.ui.Ok()
+		cmd.ui.Warn(err.Error())
+	default:
+		cmd.ui.Failed(err.Error())
+	}
 }
