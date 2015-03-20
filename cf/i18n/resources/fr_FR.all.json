@@ -5196,17 +5196,17 @@
    },
    {
       "id": "Create key for a service instance",
-      "translation": "Create key for a service instance",
+      "translation": "Créer une clef pour un instance de service",
       "modified": false
    },
    {
       "id": "CF_NAME create-service-key SERVICE_INSTANCE SERVICE_KEY\n\nEXAMPLE:\n   CF_NAME create-service-key mydb mykey",
-      "translation": "CF_NAME create-service-key SERVICE_INSTANCE SERVICE_KEY\n\nEXAMPLE:\n   CF_NAME create-service-key mydb mykey",
+      "translation": "CF_NAME create-service-key SERVICE_INSTANCE SERVICE_KEY\n\nÉXAMPLE:\n   CF_NAME create-service-key mydb mykey",
       "modified": false
    },
    {
       "id": "Creating service key {{.ServiceKeyName}} for service instance {{.ServiceInstanceName}} as {{.CurrentUser}}...",
-      "translation": "Creating service key {{.ServiceKeyName}} for service instance {{.ServiceInstanceName}} as {{.CurrentUser}}...",
+      "translation": "Créer une clef {{.ServiceKeyName}} pour instance de service {{.ServiceInstanceName}} étant {{.CurrentUser}}...",
       "modified": false
    },
    {
@@ -5231,27 +5231,57 @@
    },
    {
       "id": "Getting key {{.ServiceKeyName}} for service instance {{.ServiceInstanceName}} as {{.CurrentUser}}...",
-      "translation": "Getting key {{.ServiceKeyName}} for service instance {{.ServiceInstanceName}} as {{.CurrentUser}}...",
+      "translation": "En train d'obtenir la clef {{.ServiceKeyName}} pour instance de service {{.ServiceInstanceName}} étant {{.CurrentUser}}...",
       "modified": false
    },
    {
       "id": "No service key {{.ServiceKeyName}} found for service instance {{.ServiceInstanceName}}",
-      "translation": "No service key {{.ServiceKeyName}} found for service instance {{.ServiceInstanceName}}",
+      "translation": "Pas de clef de service {{.ServiceKeyName}} trouver pour instance de service {{.ServiceInstanceName}}",
       "modified": false
    },
    {
       "id": "CF_NAME service-key SERVICE_INSTANCE SERVICE_KEY\n\nEXAMPLE:\n   CF_NAME service-key mydb mykey",
-      "translation": "CF_NAME service-key SERVICE_INSTANCE SERVICE_KEY\n\nEXAMPLE:\n   CF_NAME service-key mydb mykey",
+      "translation": "CF_NAME service-key SERVICE_INSTANCE SERVICE_KEY\n\nÉXAMPLE:\n   CF_NAME service-key mydb mykey",
       "modified": false 
    },
    {
       "id": "Retrieve and display the given service-key's guid.  All other output for the service is suppressed.",
-      "translation": "Retrieve and display the given service-key's guid.  All other output for the service is suppressed.",
+      "translation": "Récupérer et montrer le guid d'un clef the service.  Tout autre information pour la clef de service a été suprimer.",
       "modified": false
    },
    {
       "id": "Show service key info",
-      "translation": "Show service key info",
+      "translation": "Montrer information pour la clef de service",
+      "modified": false
+   },
+   {
+      "id": "Delete a service key",
+      "translation": "Suprimer une clef de service",
+      "modified": false
+   },
+   {
+      "id": "CF_NAME delete-service-key SERVICE_INSTANCE SERVICE_KEY [-f]\n\nEXAMPLE:\n   CF_NAME delete-service-key mydb mykey",
+      "translation": "CF_NAME delete-service-key SERVICE_INSTANCE SERVICE_KEY [-f]\n\nÉXAMPLE:\n   CF_NAME delete-service-key mydb mykey",
+      "modified": false
+   },
+   {
+      "id": "Deleting key {{.ServiceKeyName}} for service instance {{.ServiceInstanceName}} as {{.CurrentUser}}...",
+      "translation": "Suprimer la clef {{.ServiceKeyName}} pour instance de service {{.ServiceInstanceName}} étant {{.CurrentUser}}...",
+      "modified": false
+   },
+   {
+      "id": "Service instance {{.ServiceInstanceName}} does not exist.",
+      "translation": "Instance de service {{.ServiceInstanceName}} n'existe pas.",
+      "modified": false
+   },
+   {
+      "id": "Service key {{.ServiceKeyName}} does not exist for service instance {{.ServiceInstanceName}}.",
+      "translation": "La clef de service {{.ServiceKeyName}} n'existe pas pour l'instance de service {{.ServiceInstanceName}}.",
+      "modified": false
+   },
+   {
+      "id": "service key",
+      "translation": "clef de service",
       "modified": false
    }
 ]

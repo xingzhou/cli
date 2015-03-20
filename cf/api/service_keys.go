@@ -13,9 +13,10 @@ import (
 )
 
 type ServiceKeyRepository interface {
-	CreateServiceKey(instanceId string, keyName string) (apiErr error)
-	ListServiceKeys(instanceId string) (serviceKeys []models.ServiceKey, apiErr error)
-	GetServiceKey(instanceId string, keyName string) (serviceKey models.ServiceKey, apiErr error)
+	CreateServiceKey(instanceGuid string, keyName string) (apiErr error)
+	ListServiceKeys(instanceGuid string) (serviceKeys []models.ServiceKey, apiErr error)
+	GetServiceKey(instanceGuid string, keyName string) (serviceKey models.ServiceKey, apiErr error)
+	DeleteServiceKey(serviceKeyGuid string) (apiErr error)
 }
 
 type CloudControllerServiceKeyRepository struct {
@@ -30,9 +31,9 @@ func NewCloudControllerServiceKeyRepository(config core_config.Reader, gateway n
 	}
 }
 
-func (c CloudControllerServiceKeyRepository) CreateServiceKey(instanceId string, keyName string) (apiErr error) {
+func (c CloudControllerServiceKeyRepository) CreateServiceKey(instanceGuid string, keyName string) (apiErr error) {
 	path := "/v2/service_keys"
-	data := fmt.Sprintf(`{"service_instance_guid":"%s","name":"%s"}`, instanceId, keyName)
+	data := fmt.Sprintf(`{"service_instance_guid":"%s","name":"%s"}`, instanceGuid, keyName)
 
 	err := c.gateway.CreateResource(c.config.ApiEndpoint(), path, strings.NewReader(data))
 
@@ -43,8 +44,8 @@ func (c CloudControllerServiceKeyRepository) CreateServiceKey(instanceId string,
 	return nil
 }
 
-func (c CloudControllerServiceKeyRepository) ListServiceKeys(instanceId string) (serviceKeys []models.ServiceKey, apiErr error) {
-	path := fmt.Sprintf("/v2/service_keys?q=service_instance_guid:%s", instanceId)
+func (c CloudControllerServiceKeyRepository) ListServiceKeys(instanceGuid string) (serviceKeys []models.ServiceKey, apiErr error) {
+	path := fmt.Sprintf("/v2/service_keys?q=service_instance_guid:%s", instanceGuid)
 
 	serviceKeys = []models.ServiceKey{}
 	apiErr = c.gateway.ListPaginatedResources(
@@ -64,8 +65,8 @@ func (c CloudControllerServiceKeyRepository) ListServiceKeys(instanceId string) 
 	return serviceKeys, nil
 }
 
-func (c CloudControllerServiceKeyRepository) GetServiceKey(instanceId string, keyName string) (serviceKey models.ServiceKey, apiErr error) {
-	url := fmt.Sprintf("%s/v2/service_keys?q=service_instance_guid:%s;%s", c.config.ApiEndpoint(), instanceId, url.QueryEscape("name:"+keyName))
+func (c CloudControllerServiceKeyRepository) GetServiceKey(instanceGuid string, keyName string) (serviceKey models.ServiceKey, apiErr error) {
+	url := fmt.Sprintf("%s/v2/service_keys?q=service_instance_guid:%s;%s", c.config.ApiEndpoint(), instanceGuid, url.QueryEscape("name:"+keyName))
 
 	serviceKeyResource := new(resources.ServiceKeyResource)
 	apiErr = c.gateway.GetResource(url, serviceKeyResource)
@@ -75,4 +76,9 @@ func (c CloudControllerServiceKeyRepository) GetServiceKey(instanceId string, ke
 	}
 
 	return serviceKeyResource.ToModel(), nil
+}
+
+func (c CloudControllerServiceKeyRepository) DeleteServiceKey(serviceKeyGuid string) (apiErr error) {
+	path := fmt.Sprintf("/v2/service_keys/%s", serviceKeyGuid)
+	return c.gateway.DeleteResource(c.config.ApiEndpoint(), path)
 }

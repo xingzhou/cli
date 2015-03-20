@@ -140,6 +140,19 @@ var _ = Describe("Service Keys Repo", func() {
 		})
 	})
 
+	Describe("delete service key", func() {
+		It("makes the right request", func() {
+			setupTestServer(testapi.NewCloudControllerTestRequest(testnet.TestRequest{
+				Method: "DELETE",
+				Path:   "/v2/service_keys/fake-service-key-guid",
+			}))
+
+			err := repo.DeleteServiceKey("fake-service-key-guid")
+			Expect(testHandler).To(HaveAllRequestsCalled())
+			Expect(err).NotTo(HaveOccurred())
+		})
+	})
+
 	AfterEach(func() {
 		testServer.Close()
 	})

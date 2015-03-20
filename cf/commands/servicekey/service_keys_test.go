@@ -90,7 +90,7 @@ var _ = Describe("service-keys command", func() {
 				[]string{"fake-service-key-2"},
 				[]string{"OK"},
 			))
-			Expect(serviceKeyRepo.ListServiceKeysMethod.InstanceId).To(Equal("fake-instance-guid"))
+			Expect(serviceKeyRepo.ListServiceKeysMethod.InstanceGuid).To(Equal("fake-instance-guid"))
 		})
 
 		It("does not list service keys when none are returned", func() {
